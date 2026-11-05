@@ -1,4 +1,4 @@
-namespace facture_generator.Models;
+namespace FactureGenerator.Models;
 
 public class ErrorViewModel
 {

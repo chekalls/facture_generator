@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using facture_generator.Models;
+using FactureGenerator.Models;
 
-namespace facture_generator.Controllers;
+namespace FactureGenerator.Controllers;
 
 public class HomeController : Controller
 {
