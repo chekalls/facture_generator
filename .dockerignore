@@ -5,6 +5,7 @@
 **/.git/
 **/.gitignore
 **/node_modules/
+dbdata/
 
 Dockerfile
 .dockerignore

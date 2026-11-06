@@ -3,3 +3,6 @@ obj/
 
 # Secrets locaux
 .env
+
+# Donnees PostgreSQL locales (bind mount du service db)
+dbdata/
