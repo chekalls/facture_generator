@@ -6,3 +6,5 @@ obj/
 
 # Donnees PostgreSQL locales (bind mount du service db)
 dbdata/
+**/bin/
+**/obj/
