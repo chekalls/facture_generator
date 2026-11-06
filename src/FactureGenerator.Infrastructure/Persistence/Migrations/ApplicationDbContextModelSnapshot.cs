@@ -33,7 +33,7 @@ namespace FactureGenerator.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("address");
 
                     b.Property<DateTime>("CreatedAt")
@@ -47,18 +47,41 @@ namespace FactureGenerator.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Nif")
                         .IsRequired()
-                        .HasColumnType("varchar(11)")
+                        .HasColumnType("varchar(10)")
                         .HasColumnName("nif");
 
                     b.Property<string>("Stat")
                         .IsRequired()
-                        .HasColumnType("varchar(11)")
+                        .HasColumnType("varchar(17)")
                         .HasColumnName("stat");
 
                     b.HasKey("Id")
                         .HasName("pk_companies");
 
                     b.ToTable("companies", (string)null);
+                });
+
+            modelBuilder.Entity("FactureGenerator.Domain.Entities.UserCompany", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
+                        .HasColumnName("userid");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("companyid");
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("assignedat");
+
+                    b.HasKey("UserId", "CompanyId")
+                        .HasName("pk_user_companies");
+
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_user_companies_companyid");
+
+                    b.ToTable("user_companies", (string)null);
                 });
 
             modelBuilder.Entity("FactureGenerator.Infrastructure.Identity.ApplicationUser", b =>
@@ -313,6 +336,23 @@ namespace FactureGenerator.Infrastructure.Persistence.Migrations
                         .HasName("pk_user_tokens");
 
                     b.ToTable("user_tokens", (string)null);
+                });
+
+            modelBuilder.Entity("FactureGenerator.Domain.Entities.UserCompany", b =>
+                {
+                    b.HasOne("FactureGenerator.Domain.Entities.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_companies_companies_companyid");
+
+                    b.HasOne("FactureGenerator.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_companies_users_userid");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

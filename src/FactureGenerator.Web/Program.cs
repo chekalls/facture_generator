@@ -1,9 +1,11 @@
+using FactureGenerator.Application;
 using FactureGenerator.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplication();
 
 // DbContext, Identity et conventions de nommage PostgreSQL sont enregistres par la couche Infrastructure.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -32,6 +34,7 @@ if (httpsEndpointConfigured)
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

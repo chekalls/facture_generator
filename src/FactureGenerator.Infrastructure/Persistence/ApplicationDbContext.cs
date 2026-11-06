@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<Company> Companies { get; set; }
+    public DbSet<UserCompany> UserCompanies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -38,10 +39,25 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.ToTable("companies");
             entity.HasKey(c => c.Id);
             entity.Property(c => c.Id).UseIdentityByDefaultColumn();
-            entity.Property(c => c.Nif).HasColumnType("varchar(11)");
-            entity.Property(c => c.Stat).HasColumnType("varchar(11)");
-            entity.Property(c => c.Address).HasColumnType("varchar(100)");
+            entity.Property(c => c.Nif).HasColumnType("varchar(10)");
+            entity.Property(c => c.Stat).HasColumnType("varchar(17)");
+            entity.Property(c => c.Address).HasColumnType("varchar(500)");
             entity.Property(c => c.Designation).HasColumnType("varchar(255)");
+        });
+
+        builder.Entity<UserCompany>(entity =>
+        {
+            entity.ToTable("user_companies");
+            entity.HasKey(uc => new { uc.UserId, uc.CompanyId });
+            entity.Property(uc => uc.UserId).HasColumnType("text");
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(uc => uc.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne<Company>()
+                .WithMany()
+                .HasForeignKey(uc => uc.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -1,5 +1,7 @@
+using FactureGenerator.Application.Common.Interfaces;
 using FactureGenerator.Infrastructure.Identity;
 using FactureGenerator.Infrastructure.Persistence;
+using FactureGenerator.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +22,17 @@ public static class DependencyInjection
             options.SignIn.RequireConfirmedAccount = false;
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
+            options.User.RequireUniqueEmail = true;
         })
+        .AddErrorDescriber<FrenchIdentityErrorDescriber>()
         .AddRoles<IdentityRole>()
+        .AddSignInManager()
         .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
+
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ICompanyService, CompanyService>();
 
         return services;
     }

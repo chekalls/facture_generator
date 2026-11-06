@@ -1,0 +1,48 @@
+@model FactureGenerator.Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<h2>Se connecter</h2>
+<hr />
+
+@if (TempData["ErrorMessage"] is string errorMessage)
+{
+    <div class="alert alert-danger" role="alert">@errorMessage</div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-controller="Authentication" asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" type="email" class="form-control" autocomplete="username" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Se souvenir de moi</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+
+            <div class="mt-3 text-center">
+                <span>Pas de compte ? <a asp-controller="Subscription" asp-action="Index">Inscrivez-vous</a></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
